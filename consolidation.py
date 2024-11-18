@@ -1,5 +1,4 @@
 import random
-target = 100
 
 def roll_dice():
   """ Simulates rolling 3 dice. """
@@ -19,5 +18,15 @@ fixed = [x for x in counts if counts[x] == 2]
 return fixed 
 
 def play_turn(player_name, computer=False):
+  """ Plays one turn for a player."""
   dice = roll_dice()
+  # Initializes empty list to store rolls. 
+  roll_history = []
   print(f"{player_name} rolls: {dice}")
+   # message if the player has "tupled out"
+  if tuple_out(dice):
+    return 0 
+
+fixed = fix_dice(dice)
+# append the original roll as a tuple 
+roll_history.append(tuple(dice))
