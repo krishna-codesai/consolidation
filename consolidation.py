@@ -11,10 +11,8 @@ def roll_dice():
 
 def tuple_out(dice):
     """ Checks if all three dice are the same, indicating the player has 'tupled out'. """
-    # If all numbers if the set have the same value, the length of the set will be equal to one 
-    # Checks if the number of values is set to one 
-    # This condition will only be true if all dice have the same value
-    return len(set(dice)) == 1
+    # returns if all dice are equal (are the same value) 
+   return dice [0] == dice[1] == dice[2]
 
 def fixed_dice(dice):
     """ Identifies 'fixed' dice if two dice are the same. """
@@ -22,7 +20,7 @@ def fixed_dice(dice):
     counts = {x: dice.count(x) for x in dice}
     # Fixed dice are those values that appear exactly twice
     # Initialize list for fixed dice
-    fixed= []
+    fixed = []
     # Iterated over the indices of the fixed list
     for i in range (len(dice)): 
         # Checking if the value at index i appears exactly twice 
@@ -30,7 +28,7 @@ def fixed_dice(dice):
             # Added index 'i' to the fixed list 
             fixed.append(i)
             # returns updated list 
-            return fixed
+    return fixed
             
 
 def play_turn(player_name, computer=False):
@@ -52,14 +50,20 @@ def play_turn(player_name, computer=False):
     # Determine fixed dice
     fixed = fixed_dice(dice)
 
-    # Loop will continue until return statement occurs 
+    # Initializing re-roll counter 
+    re_roll_count = 0 
     while True:
+        # limits the number of re-rolls per turn to avoid a potential infinite loop 
+        re_roll_count += 1
+        if re_roll_count > 5: 
+            print(f"Maximum re-rolls reached for {player_name}.")
+            break 
         # Loop iterates through all 3 indices (0,1,2)
         # If die index(i) is not in the fixed list, it is re-rolled and assigned a new value 
         for i in range(3):
             if i not in fixed:
                 dice[i] = random.randint(1, 6)
-                # Append the new roll to roll_history list as a tuple 
+        # Append the new roll to roll_history list as a tuple 
         roll_history.append(tuple(dice)) 
         # prints new values if dice is re-rolled 
         print(f"{player_name} re-rolls: {dice}")
