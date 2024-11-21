@@ -12,7 +12,7 @@ def roll_dice():
 def tuple_out(dice):
     """ Checks if all three dice are the same, indicating the player has 'tupled out'. """
     # returns if all dice are equal (are the same value) 
-   return dice [0] == dice[1] == dice[2]
+    return dice [0] == dice[1] == dice[2]
 
 def fixed_dice(dice):
     """ Identifies 'fixed' dice if two dice are the same. """
