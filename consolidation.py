@@ -12,7 +12,7 @@ def roll_dice():
 def tuple_out(dice):
     """ Checks if all three dice are the same, indicating the player has 'tupled out'. """
     # returns if all dice are equal (are the same value) 
-    return dice [0] == dice[1] == dice[2]
+    return dice[0] == dice[1] == dice[2]
 
 def fixed_dice(dice):
     """ Identifies 'fixed' dice if two dice are the same. """
@@ -27,8 +27,9 @@ def fixed_dice(dice):
         if counts[dice[i]] == 2:
             # Added index 'i' to the fixed list 
             fixed.append(i)
-            # returns updated list 
-    return fixed
+# returns updated list 
+return fixed
+
             
 
 def play_turn(player_name, computer=False):
@@ -83,11 +84,13 @@ def play_turn(player_name, computer=False):
             # Randomly chooses yes or no 
             stop = "y" if random.choice([True, False]) else "n"
         # If player chooses "y" stops the game and shows the player their score and roll history. 
-        if stop == "y":
-            score = sum(dice)
-            print(f"{player_name} scores {score} points this turn.")
-            print(f"Roll history for this turn: {roll_history}")
-            return score
+     if stop == "y":
+    score = sum(dice)
+    print(f"{player_name} scores {score} points this turn.")
+    print(f"Roll history for this turn: {roll_history}")
+    return score
+# If the player chooses "n", the loop continues automatically
+
 
 # Game loop
 # Initializing list to score player scores  
