@@ -2,7 +2,9 @@
 import random
 
 # Target score to win the game
-target = 100
+target = int(input("Enter the target score to win or default to 100: ") or 50)
+# Max re-rolls 
+max_re_rolls = int(input("Enter the maximum re-rolls or default to 5: ") or 5)
 
 def roll_dice():
     """ Simulates rolling 3 dice. """
@@ -21,8 +23,21 @@ def fixed_dice(dice):
             fixed.append(i)
     return fixed
 
+def re_roll_dice(dice, fixed_indices):
+    """ Re-rolls only non-fixed dice """
+    return[random.randint(1,6) if i not in fixed_indices else dice[i] for i in range(3)]
+
+def get_player_choice(player_name):
+    """ Validates the input for stopping or continuing the turn."""
+    while True:
+        choice = input(f"{player_name}, stop and keep score? (y/n): ").strip().lower()
+        if choice in {"y", "n"}:
+            return choice 
+        else: 
+            print("Invalid input. Please enter 'y' or 'n'.")
+
 def play_turn(player_name, computer=False):
-    """Plays one turn for a player."""
+    """ Plays one turn for a player."""
     dice = roll_dice()
     roll_history = []
     print(f"{player_name} rolls: {dice}")
@@ -31,35 +46,38 @@ def play_turn(player_name, computer=False):
     if tuple_out(dice):
         print(f"Tuple out! {player_name} scores 0 points this turn.")
         return 0
+
+    # Check if the player rolled a fixed dice 
+    if fixed_dice(dice):
+        print(f"{player_name} rolled a fixed dice! The score will be kept.")
+        score = sum(dice)
+        print(f"{player_name} scores {score} points this turn.")
+        print(f"Roll history for this turn: {roll_history}")
+        return score
     
     roll_history.append(tuple(dice))  # Record the initial roll
     fixed = fixed_dice(dice)  # Determine fixed dice
     re_roll_count = 0
 
-    while True:
+    while re_roll_count < max_re_rolls: 
         # Limit the number of rerolls
-        if re_roll_count >= 5:
-            print(f"Maximum re-rolls reached for {player_name}.")
-            break
-
-        if not computer:
-            stop = input(f"{player_name}, stop and keep score? (y/n): ").strip().lower()
+        if computer:
+            stop = "y" if sum(dice) >= 12 or random.choice([True,False]) else "n"
         else:
-            stop = "y" if random.choice([True, False]) else "n"
-
+            stop = get_player_choice(player_name)
+        # If the player decides to stop the game 
         if stop == "y":
+            # Adds player's score
             score = sum(dice)
             print(f"{player_name} scores {score} points this turn.")
             print(f"Roll history for this turn: {roll_history}")
             return score
-
-        # Re-roll logic
-        re_roll_count += 1
-        for i in range(3):
-            if i not in fixed:
-                dice[i] = random.randint(1, 6)
-        roll_history.append(tuple(dice))  # Record the reroll
-        print(f"{player_name} re-rolls: {dice}")
+        else: 
+            # If the player decides to re-roll
+            re_roll_count += 1
+            dice = re_roll_dice(dice,fixed)
+            roll_history.append(tuple(dice))
+            print(f"{player_name} re-rolls: {dice}")
 
         # Check for tuple out after re-roll
         if tuple_out(dice):
