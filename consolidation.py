@@ -40,7 +40,7 @@ def get_player_choice(player_name):
 def play_turn(player_name, computer=False):
     """ Plays one turn for a player."""
     dice = roll_dice()
-    roll_history = []
+    roll_history = [tuple(dice)]
     print(f"{player_name} rolls: {dice}")
     
     # Check if the player tupled out
@@ -49,32 +49,34 @@ def play_turn(player_name, computer=False):
         return 0
 
     # Check if the player rolled a fixed dice 
-    if fixed_dice(dice):
+    fixed = fixed_dice(dice)
+    if fixed:
         print(f"{player_name} rolled a fixed dice! The score will be kept.")
         score = sum(dice)
         print(f"{player_name} scores {score} points this turn.")
         print(f"Roll history for this turn: {roll_history}")
         return score
 
-    re_roll_count = 0
+    re_roll_count = 0  # Initialize re-roll count
 
-    while re_roll_count < max_re_rolls: 
+    while re_roll_count < max_re_rolls:  
         # Limit the number of rerolls
         if computer:
-            stop = "y" if sum(dice) >= 12 or random.choice([True,False]) else "n"
+            stop = "y" if sum(dice) >= 12 or random.choice([True, False]) else "n"
         else:
             stop = get_player_choice(player_name)
+
         # If the player decides to stop the game 
         if stop == "y":
-            # Adds player's score
             score = sum(dice)
             print(f"{player_name} scores {score} points this turn.")
             print(f"Roll history for this turn: {roll_history}")
             return score
 
-            # If the player decides to re-roll
+        # If the player decides to re-roll
         re_roll_count += 1
-        dice = re_roll_dice(dice,fixed)
+        # Re-roll only non-fixed dice 
+        dice = re_roll_dice(dice, fixed) 
         roll_history.append(tuple(dice))
         print(f"{player_name} re-rolls: {dice}")
 
@@ -82,13 +84,17 @@ def play_turn(player_name, computer=False):
         if tuple_out(dice):
             print(f"Tuple out! {player_name} scores 0 points this turn.")
             return 0
-        # Check for fixed dice after re-roll
-        if fixed_dice(dice):
-            print(f"{player_name} rolled a fixed dice! The score will be kept.")
+
+        # Recalculate fixed dice after each re-roll
+        fixed = fixed_dice(dice) 
+        if fixed:
+            print(f"{player_name} rolled fixed dice: {dice}. Turn ends.")
             score = sum(dice)
             print(f"{player_name} scores {score} points this turn.")
             print(f"Roll history for this turn: {roll_history}")
             return score
+
+
 
 # Game loop
 scores = [0, 0]
