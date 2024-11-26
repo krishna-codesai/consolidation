@@ -2,7 +2,7 @@
 import random
 
 # Target score to win the game
-target = int(input("Enter the target score to win or default to 100: ") or 50)
+target = int(input("Enter the target score to win or default to 50: ") or 50)
 # Max re-rolls 
 max_re_rolls = int(input("Enter the maximum re-rolls or default to 5: ") or 5)
 
@@ -15,13 +15,14 @@ def tuple_out(dice):
     return dice[0] == dice[1] == dice[2]
 
 def fixed_dice(dice):
-    """ Identifies 'fixed' dice if two dice are the same. """
+    """ Identifies indices of dice that should be fixed if two dice are the same. """
     counts = {x: dice.count(x) for x in dice}
-    fixed = []
+    fixed_indices = []
     for i in range(len(dice)):
         if counts[dice[i]] == 2:
-            fixed.append(i)
-    return fixed
+            fixed_indices.append(i)
+    return fixed_indices
+
 
 def re_roll_dice(dice, fixed_indices):
     """ Re-rolls only non-fixed dice """
