@@ -18,6 +18,7 @@ def fixed_dice(dice):
     """ Identifies indices of dice that should be fixed if two dice are the same. """
     counts = {x: dice.count(x) for x in dice}
     fixed_indices = []
+    # Defines what a fixed dice is 
     for i in range(len(dice)):
         if counts[dice[i]] == 2:
             fixed_indices.append(i)
@@ -26,15 +27,20 @@ def fixed_dice(dice):
 
 def re_roll_dice(dice, fixed_indices):
     """ Re-rolls only non-fixed dice """
+    # Uses the fixed_indices from the fixed_dice function to identify what a fixed dice it 
     return[random.randint(1,6) if i not in fixed_indices else dice[i] for i in range(3)]
 
 def get_player_choice(player_name):
     """ Validates the input for stopping or continuing the turn."""
+    # Gives the user a chance to input "y" or "n" if the input is not valid the first time
     while True:
+        # Makes sure that the user only uses "y" and "n" when asked if they want to continue
+        #.strip() and .lower() make it so that white space and upper case doesn't matter
         choice = input(f"{player_name}, stop and keep score? (y/n): ").strip().lower()
         if choice in {"y", "n"}:
             return choice 
         else: 
+            # Error message if input is invalid 
             print("Invalid input. Please enter 'y' or 'n'.")
 
 def play_turn(player_name, computer=False):
@@ -96,17 +102,25 @@ def play_turn(player_name, computer=False):
 
 
 
-# Game loop
+# Initializes scores
 scores = [0, 0]
+# Defines player names 
 player_names = ["Player 1", "Player 2"]
+# Initializes current_player variable 
 current_player = 0
 
+# Game loop 
+# While the max scores are less than the target score
 while max(scores) < target:
+    # Message that tells player's whose turn it is  
     print(f"\n{player_names[current_player]}'s turn!")
+    # Score that the player earns each turn 
     turn_score = play_turn(player_names[current_player])
     scores[current_player] += turn_score
     print(f"{player_names[current_player]}'s total score: {scores[current_player]}")
-    current_player = 1 - current_player  # Switch players
-
+    # Swtiches players 
+    current_player = 1 - current_player  
+# How the winner is determined 
 winner = player_names[0] if scores[0] >= target else player_names[1]
+# Winner message 
 print(f"\n{winner} wins with a score of {max(scores)}!")
