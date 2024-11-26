@@ -55,9 +55,7 @@ def play_turn(player_name, computer=False):
         print(f"{player_name} scores {score} points this turn.")
         print(f"Roll history for this turn: {roll_history}")
         return score
-    
-    roll_history.append(tuple(dice))  # Record the initial roll
-    fixed = fixed_dice(dice)  # Determine fixed dice
+
     re_roll_count = 0
 
     while re_roll_count < max_re_rolls: 
@@ -73,17 +71,24 @@ def play_turn(player_name, computer=False):
             print(f"{player_name} scores {score} points this turn.")
             print(f"Roll history for this turn: {roll_history}")
             return score
-        else: 
+
             # If the player decides to re-roll
-            re_roll_count += 1
-            dice = re_roll_dice(dice,fixed)
-            roll_history.append(tuple(dice))
-            print(f"{player_name} re-rolls: {dice}")
+        re_roll_count += 1
+        dice = re_roll_dice(dice,fixed)
+        roll_history.append(tuple(dice))
+         print(f"{player_name} re-rolls: {dice}")
 
         # Check for tuple out after re-roll
         if tuple_out(dice):
             print(f"Tuple out! {player_name} scores 0 points this turn.")
             return 0
+        # Check for fixed dice after re-roll
+        if fixed_dice(dice):
+            print(f"{player_name} rolled a fixed dice! The score will be kept.")
+            score = sum(dice)
+            print(f"{player_name} scores {score} points this turn.")
+            print(f"Roll history for this turn: {roll_history}")
+            return score
 
 # Game loop
 scores = [0, 0]
