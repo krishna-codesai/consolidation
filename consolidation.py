@@ -76,7 +76,7 @@ def play_turn(player_name, computer=False):
         re_roll_count += 1
         dice = re_roll_dice(dice,fixed)
         roll_history.append(tuple(dice))
-         print(f"{player_name} re-rolls: {dice}")
+        print(f"{player_name} re-rolls: {dice}")
 
         # Check for tuple out after re-roll
         if tuple_out(dice):
