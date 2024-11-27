@@ -21,6 +21,7 @@ Start by running it in the Python terminal.
 The code will then ask the user what they want their target score to be. They can choose any number they want or skip it and let it default to 50. 
 After that, the code will ask the user how many turns they would like to be limited to. They can choose any number they want or skip it and let it default to 5. 
 The code will then output three numbers for player 1 and that user has the yes or no ("y" or "n") option whether to keep the numbers or re-roll for a better chance.
+If the player makes a typo when being asked if they want to continue or not, they will be prompted to answer the question again, allowing them to correct their mistake. 
 Then once they are satisfied with their three dice outputs they can answer no to the re-roll question and it moves on to player 2 and they repeat the same
 steps as player 1 did.
 Both players have the ability to re-roll as many times as they want till they "tuple out", roll a "fixed" dice, or are happy with the sum of their dice points.
